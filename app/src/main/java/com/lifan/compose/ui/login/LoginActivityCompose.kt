@@ -10,8 +10,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lifan.compose.R
-import com.lifan.compose.ShowTextField
 
 /**
  * @author: LiFan
@@ -21,6 +21,7 @@ import com.lifan.compose.ShowTextField
 
 @Composable
 fun LoginActivityCompose() {
+    val loginVM: LoginViewModel = viewModel()
     Column(
         modifier = Modifier
             .fillMaxWidth() // 充满父布局的宽度
@@ -30,13 +31,20 @@ fun LoginActivityCompose() {
         Box(modifier = Modifier.height(120.dp))
         UserAvatar(imageResId = R.mipmap.avatar)
         Box(modifier = Modifier.height(45.dp))
-        InputUI("账号")
+        InputUI("账号",loginVM.accountText) {
+            loginVM.setAccount(it)
+        }
         Box(modifier = Modifier.height(20.dp))
-        InputUI("密码")
+        InputUI("密码",loginVM.passwordText) {
+            loginVM.setPassword(it)
+        }
         Box(modifier = Modifier.height(70.dp))
-//        Button(onClick = { }) {
-//
-//        }
+        Button(
+            onClick = { },
+            enabled = loginVM.loginEnable
+        ) {
+            Text(text = "登录")
+        }
     }
 }
 
@@ -61,14 +69,14 @@ fun UserAvatar(imageResId: Int) {
 }
 
 @Composable
-fun InputUI(hint:String) {
+fun InputUI(hint: String,text:String, callback: (String) -> Unit) {
     //初始化文本变量
-    var text by remember { mutableStateOf("") }
-    var (text2,k) = remember { mutableStateOf("") }
+//    var text by remember { mutableStateOf("") }
+//    var (text2, k) = remember { mutableStateOf("") }
 
     TextField(
         value = text, // 显示文本
-        onValueChange = { text = it }, // 监听文本变化，并赋值给text
+        onValueChange = { callback(it) }, // 监听文本变化，并赋值给text
         label = { Text(text = hint) }, // 设置label
         colors = TextFieldDefaults.outlinedTextFieldColors(
             backgroundColor = Color.Transparent // 设置背景为透明
