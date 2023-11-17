@@ -1,5 +1,6 @@
 package com.lifan.compose.ui.login
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -7,10 +8,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.lifan.compose.APP
 import com.lifan.compose.R
 
 /**
@@ -39,13 +42,22 @@ fun LoginActivityCompose() {
             loginVM.setPassword(it)
         }
         Box(modifier = Modifier.height(70.dp))
-        Button(
-            onClick = { },
-            enabled = loginVM.loginEnable
-        ) {
-            Text(text = "登录")
-        }
+        LoginButton()
     }
+}
+
+@Composable
+fun LoginButton() {
+    val loginVM: LoginViewModel = viewModel()
+    Button(
+        onClick = {
+            APP.showToast("第 ${loginVM.count++} 次登录")
+        },
+        enabled = loginVM.loginEnable
+    ) {
+        Text(text = "登录")
+    }
+
 }
 
 @Composable

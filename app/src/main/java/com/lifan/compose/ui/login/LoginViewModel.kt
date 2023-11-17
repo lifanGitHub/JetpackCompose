@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel
  */
 
 class LoginViewModel(): ViewModel(){
+    var count by mutableStateOf(0)
     var accountText by mutableStateOf("")
     var passwordText by mutableStateOf("")
     var loginEnable by mutableStateOf(false)
